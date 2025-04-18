@@ -7,10 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add scroll event to handle navigation appearance changes
   window.addEventListener('scroll', () => {
     const nav = document.querySelector('nav');
-    if (window.scrollY > 50) {
-      nav.classList.add('scrolled');
+    const scrollThreshold = 100; // Threshold for complete transition
+    
+    if (window.scrollY > 0) {
+      // Any scroll - start transition to black based on scroll position
+      const opacity = Math.min(window.scrollY / scrollThreshold, 1);
+      
+      if (opacity >= 1) {
+        // Fully scrolled - apply scrolled class for solid background
+        nav.classList.add('scrolled');
+      } else {
+        // Transitioning - blend between gradient and solid
+        nav.classList.remove('scrolled');
+        nav.style.backgroundColor = `rgba(20, 20, 20, ${opacity})`;
+      }
     } else {
+      // At top - reset to default gradient with transparent background color
       nav.classList.remove('scrolled');
+      nav.style.backgroundColor = 'transparent';
     }
   });
 
