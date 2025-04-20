@@ -926,7 +926,6 @@ main {
   justify-content: flex-start;
   width: 100%;
   height: 176px;
-  overflow: hidden;
   margin-top: -168px;
   gap: 12px;
 }
@@ -947,6 +946,8 @@ main {
   justify-content: center;
   cursor: pointer;
   z-index: 20;
+  opacity: 1;
+  visibility: visible;
 }
 
 .carousel-chevron-right::before {
@@ -958,7 +959,7 @@ main {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease;
   z-index: -1;
 }
 
@@ -973,6 +974,7 @@ main {
   position: relative;
   z-index: 2;
   opacity: 0;
+  transform-origin: center center;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
@@ -983,6 +985,68 @@ main {
 
 .carousel-chevron-right:hover::before {
   opacity: 1;
+}
+
+/* Left chevron */
+.carousel-chevron-left {
+  position: absolute;
+  left: 0;
+  top: auto;
+  bottom: 7px;
+  transform: none;
+  width: 78px;
+  height: 130px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), transparent);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  opacity: 1;
+  visibility: visible;
+}
+
+.carousel-chevron-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.carousel-chevron-left::after {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-top: 2px solid var(--netflix-white);
+  border-left: 2px solid var(--netflix-white);
+  transform: rotate(-45deg);
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transform-origin: center center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-chevron-left:hover::after {
+  transform: scale(1.5) rotate(-45deg);
+  opacity: 1;
+}
+
+.carousel-chevron-left:hover::before {
+  opacity: 1;
+}
+
+/* Hidden class for elements */
+.hidden {
+  display: none !important;
 }
 
 .carousel-text {
@@ -1059,8 +1123,10 @@ main {
   -webkit-overflow-scrolling: touch;
   height: 130px;
   padding-left: 60px;
-  scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+  transition: padding-left 0.3s ease;
+  transform: translateZ(0); /* Force GPU acceleration */
+  width: calc(100% - 60px);
 }
 
 .carousel-cards::-webkit-scrollbar {
@@ -1070,12 +1136,15 @@ main {
 .card {
   flex-shrink: 0;
   scroll-snap-align: start;
+  overflow: hidden;
+  position: relative;
 }
 
 .card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: filter 0.3s ease;
 }
 
 /* Carousel Indicators */
@@ -1094,7 +1163,7 @@ main {
   height: 2px;
   background-color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, width 0.3s ease;
 }
 
 .carousel-indicators .indicator:hover {
@@ -1103,6 +1172,17 @@ main {
 
 .carousel-indicators .indicator.active {
   background-color: var(--netflix-white);
+  width: 16px;
+}
+
+/* Add these classes to style.css */
+.visible-hover::after {
+  opacity: 1 !important;
+}
+
+/* Ensure container has overflow hidden */
+.carousel-container {
+  overflow-x: hidden;
 }
 
 
