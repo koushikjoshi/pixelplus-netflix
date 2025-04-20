@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Initialize Netflix-style carousel with infinite scrolling
-  initializeCarousel();
+  // Initialize all Netflix-style carousels with infinite scrolling
+  initializeCarousels();
 
   // Search functionality
   const searchTab = document.querySelector('.searchTab');
@@ -68,19 +68,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // Toggle search box when search button is clicked
   searchTab.addEventListener('click', () => {
     updateSearchBoxPosition(); // Ensure correct positioning
-    searchBox.classList.toggle('hidden');
-    searchTab.classList.toggle('hidden');
     
-    // If search box is now visible, focus the input
-    if (!searchBox.classList.contains('hidden')) {
-      searchInput.focus();
-    }
+    // First hide the search tab
+    searchTab.classList.add('hidden');
+    
+    // Need to force a reflow to make sure transitions work properly
+    searchBox.offsetWidth;
+    
+    // Show the search box
+    searchBox.classList.remove('hidden');
+    searchInput.focus();
   });
 
   // Clear input when clear button is clicked
   clearButton.addEventListener('click', () => {
     searchInput.value = '';
     searchInput.focus();
+    clearButton.classList.add('empty');
   });
 
   // Close search box when clicking outside
@@ -88,8 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const isClickInside = searchBox.contains(event.target) || searchTab.contains(event.target);
     
     if (!isClickInside && !searchBox.classList.contains('hidden')) {
+      // First hide the search box
       searchBox.classList.add('hidden');
-      searchTab.classList.remove('hidden');
+      
+      // After animation completes, show the search tab
+      setTimeout(() => {
+        searchTab.classList.remove('hidden');
+      }, 300); // Match the CSS transition duration
     }
   });
 
@@ -105,8 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle Escape key press to close search
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !searchBox.classList.contains('hidden')) {
+      // First hide the search box
       searchBox.classList.add('hidden');
-      searchTab.classList.remove('hidden');
+      
+      // After animation completes, show the search tab
+      setTimeout(() => {
+        searchTab.classList.remove('hidden');
+      }, 300); // Match the CSS transition duration
     }
   });
   
@@ -150,16 +164,30 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Initialize the Netflix-style carousel with infinite scrolling
- * Uses cloned cards to create the illusion of infinite scrolling
+ * Initialize all Netflix-style carousels
  */
-function initializeCarousel() {
-  // Get carousel elements
-  const carouselContainer = document.querySelector('.carousel-container');
-  const carouselCards = document.querySelector('.carousel-cards');
-  const carouselChevronRight = document.querySelector('.carousel-chevron-right');
-  const carouselChevronLeft = document.querySelector('.carousel-chevron-left');
-  const indicators = document.querySelectorAll('.carousel-indicators .indicator');
+function initializeCarousels() {
+  // Find all carousel containers
+  const allCarousels = document.querySelectorAll('.carousel');
+  
+  // Initialize each carousel
+  allCarousels.forEach(carousel => {
+    initializeCarousel(carousel);
+  });
+}
+
+/**
+ * Initialize a single Netflix-style carousel with infinite scrolling
+ * Uses cloned cards to create the illusion of infinite scrolling
+ * @param {HTMLElement} carouselSection - The carousel element to initialize
+ */
+function initializeCarousel(carouselSection) {
+  // Get carousel elements within this specific carousel section
+  const carouselContainer = carouselSection;
+  const carouselCards = carouselSection.querySelector('.carousel-cards');
+  const carouselChevronRight = carouselSection.querySelector('.carousel-chevron-right');
+  const carouselChevronLeft = carouselSection.querySelector('.carousel-chevron-left');
+  const indicators = carouselSection.querySelectorAll('.carousel-indicators .indicator');
   
   // Exit if any required element is missing
   if (!carouselCards || !carouselChevronRight || !carouselChevronLeft) return;
@@ -183,10 +211,7 @@ function initializeCarousel() {
   }
   
   // Fix for black artifact - ensure parent has proper overflow
-  const carouselSection = document.querySelector('.carousel');
-  if (carouselSection) {
-    carouselSection.style.overflow = 'hidden';
-  }
+  carouselSection.style.overflow = 'hidden';
   
   // Store the initial position for reference
   let initialPosition = 0;
@@ -194,7 +219,7 @@ function initializeCarousel() {
   // 1. Calculate card dimensions and prepare infinite scroll
   function initializeCarouselDimensions() {
     // Get all cards and calculate dimensions
-    const cards = document.querySelectorAll('.carousel-cards .card');
+    const cards = carouselSection.querySelectorAll('.carousel-cards .card');
     if (cards.length < 2) return;
     
     // Calculate card width including gap by measuring distance between cards
@@ -208,9 +233,9 @@ function initializeCarousel() {
     setWidth = cardsPerSet * cardWidth;
     
     // Get container width for calculations
-    containerWidth = carouselContainer ? carouselContainer.clientWidth : document.querySelector('.carousel').clientWidth;
+    containerWidth = carouselContainer.clientWidth;
     
-    console.log('Carousel initialized with dimensions:', {
+    console.log(`Carousel ${carouselSection.className} initialized with dimensions:`, {
       cardWidth,
       cardsPerSet,
       totalCards,
@@ -230,7 +255,7 @@ function initializeCarousel() {
     const originalCards = Array.from(cards);
     
     // Clear any existing clones
-    document.querySelectorAll('.carousel-cards .card.clone').forEach(clone => {
+    carouselSection.querySelectorAll('.carousel-cards .card.clone').forEach(clone => {
       clone.remove();
     });
     
@@ -264,14 +289,14 @@ function initializeCarousel() {
     carouselCards.style.scrollBehavior = 'auto';
     
     // Calculate the initial position - after the cloned sets at the beginning
-    const cloneSetsBefore = document.querySelectorAll('.carousel-cards .card.clone-start').length / cardsPerSet;
+    const cloneSetsBefore = carouselSection.querySelectorAll('.carousel-cards .card.clone-start').length / cardsPerSet;
     initialPosition = cloneSetsBefore * setWidth;
     carouselCards.scrollLeft = initialPosition;
     
     // In the initial state, hide the partially visible card that appears before the first card
     if (isInitialView) {
       // This is the card immediately before the visible first card (last card of cloned last set)
-      const clonedCards = document.querySelectorAll('.carousel-cards .card.clone-start');
+      const clonedCards = carouselSection.querySelectorAll('.carousel-cards .card.clone-start');
       if (clonedCards.length > 0) {
         // Get the last clone-start card (should be the one right before the first visible card)
         const lastCloneStartCard = clonedCards[clonedCards.length - 1];
@@ -309,7 +334,7 @@ function initializeCarousel() {
     }
     
     // Always use carousel container for hover (wider area than just cards)
-    const container = carouselContainer || carouselCards.parentElement || carouselCards;
+    const container = carouselContainer;
     
     // Remove any existing mouseenter/mouseleave event listeners
     const oldMouseEnter = container._mouseenterHandler;
@@ -359,31 +384,31 @@ function initializeCarousel() {
     
     // Initialize chevron styles
     const style = document.createElement('style');
-    style.id = 'carousel-chevron-styles';
+    style.id = `carousel-chevron-styles-${carouselSection.className.replace(/\s+/g, '-')}`;
     style.textContent = `
-      .carousel-chevron-left::after, 
-      .carousel-chevron-right::after {
+      .${carouselSection.className.replace(/\s+/g, '.')} .carousel-chevron-left::after, 
+      .${carouselSection.className.replace(/\s+/g, '.')} .carousel-chevron-right::after {
         opacity: 0;
         transition: opacity 0.3s ease, transform 0.3s ease;
       }
       
-      .carousel-chevron-left.visible-hover::after, 
-      .carousel-chevron-right.visible-hover::after {
+      .${carouselSection.className.replace(/\s+/g, '.')} .carousel-chevron-left.visible-hover::after, 
+      .${carouselSection.className.replace(/\s+/g, '.')} .carousel-chevron-right.visible-hover::after {
         opacity: 1;
       }
       
-      .carousel-chevron-left.hidden {
+      .${carouselSection.className.replace(/\s+/g, '.')} .carousel-chevron-left.hidden {
         display: none;
       }
       
       /* Ensure chevrons are clickable */
-      .carousel-container {
+      .${carouselSection.className.replace(/\s+/g, '.')} {
         position: relative;
       }
     `;
     
     // Remove existing style if it exists
-    const existingStyle = document.getElementById('carousel-chevron-styles');
+    const existingStyle = document.getElementById(`carousel-chevron-styles-${carouselSection.className.replace(/\s+/g, '-')}`);
     if (existingStyle) {
       existingStyle.remove();
     }
@@ -412,7 +437,7 @@ function initializeCarousel() {
       carouselCards.style.width = '100%';
       
       // Show the initially hidden card when first interaction happens
-      const hiddenCard = document.querySelector('.carousel-cards .card.initially-hidden');
+      const hiddenCard = carouselSection.querySelector('.carousel-cards .card.initially-hidden');
       if (hiddenCard) {
         hiddenCard.classList.remove('initially-hidden');
       }
@@ -455,11 +480,11 @@ function initializeCarousel() {
       if (direction === 1) {
         // Last set to first set - go forward to cloned first set
         targetScroll = initialPosition + (totalSets * setWidth);
-        console.log("Going from last set to first - forward direction");
+        console.log(`${carouselSection.className}: Going from last set to first - forward direction`);
       } else {
         // First set to last set - go backward to cloned last set
         targetScroll = initialPosition - setWidth;
-        console.log("Going from first set to last - backward direction");
+        console.log(`${carouselSection.className}: Going from first set to last - backward direction`);
       }
     } else {
       // Standard position for normal transitions
@@ -482,11 +507,11 @@ function initializeCarousel() {
           if (setIndex === 0) {
             // Reset to actual first set
             carouselCards.scrollLeft = initialPosition;
-            console.log("Reset to actual first set");
+            console.log(`${carouselSection.className}: Reset to actual first set`);
           } else {
             // Reset to actual last set
             carouselCards.scrollLeft = initialPosition + ((totalSets - 1) * setWidth);
-            console.log("Reset to actual last set");
+            console.log(`${carouselSection.className}: Reset to actual last set`);
           }
           
           // Re-enable smooth scrolling after reset
@@ -495,7 +520,7 @@ function initializeCarousel() {
           }, 50);
         }
       } catch (error) {
-        console.error("Error during carousel reset:", error);
+        console.error(`${carouselSection.className}: Error during carousel reset:`, error);
       } finally {
         // Always ensure isScrolling is reset
         isScrolling = false;
@@ -652,9 +677,9 @@ function initializeCarousel() {
   
   // 11. Window resize handler
   function setupResizeHandler() {
-    window.addEventListener('resize', () => {
+    const resizeHandler = () => {
       // Recalculate dimensions on window resize
-      const cards = document.querySelectorAll('.carousel-cards .card:not(.clone)');
+      const cards = carouselSection.querySelectorAll('.carousel-cards .card:not(.clone)');
       if (cards.length < 2) return;
       
       // Recalculate card width
@@ -665,7 +690,7 @@ function initializeCarousel() {
       
       // Update setWidth and container width
       setWidth = cardsPerSet * cardWidth;
-      containerWidth = carouselContainer ? carouselContainer.clientWidth : document.querySelector('.carousel').clientWidth;
+      containerWidth = carouselContainer.clientWidth;
       
       // Reposition to current set while maintaining position style
       carouselCards.style.scrollBehavior = 'auto';
@@ -674,7 +699,13 @@ function initializeCarousel() {
       setTimeout(() => {
         carouselCards.style.scrollBehavior = 'smooth';
       }, 10);
-    });
+    };
+    
+    // Store the resize handler reference on the carousel section element
+    carouselSection._resizeHandler = resizeHandler;
+    
+    // Add the resize event listener
+    window.addEventListener('resize', resizeHandler);
   }
   
   // 12. Initialize everything

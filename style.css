@@ -174,31 +174,31 @@ nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 300ms ease;
+  transition: opacity 0.3s ease;
   position: relative;
   z-index: 1;
 }
 
 .searchTab.hidden {
   opacity: 0;
-  width: 0;
-  overflow: hidden;
+  pointer-events: none;
 }
 
 .searchBox {
   position: absolute;
   margin-right: -52px;
   height: 29px;
-  transition: width 400ms ease, opacity 200ms ease-out;
   width: 245px;
   opacity: 1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: scaleX(1);
   transform-origin: right center;
 }
 
 .searchBox.hidden {
-  width: 0;
   opacity: 0;
-  overflow: hidden;
+  transform: scaleX(0);
+  pointer-events: none;
 }
 
 .search-icon {
@@ -218,6 +218,8 @@ nav.scrolled {
   height: 100%;
   padding: 0 8px;
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .searchInput svg {
@@ -1134,17 +1136,17 @@ main {
 }
 
 .card {
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  overflow: hidden;
+  flex: 0 0 auto;
   position: relative;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .card img {
   width: 100%;
   height: 100%;
+  border-radius: 4px;
   object-fit: cover;
-  transition: filter 0.3s ease;
 }
 
 /* Carousel Indicators */
