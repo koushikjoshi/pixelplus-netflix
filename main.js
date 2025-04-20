@@ -28,6 +28,75 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Handle carousel chevron visibility
+  const carouselCards = document.querySelector('.carousel-cards');
+  const carouselChevron = document.querySelector('.carousel-chevron-right');
+  const indicators = document.querySelectorAll('.carousel-indicators .indicator');
+  
+  if (carouselCards && carouselChevron) {
+    // Show chevron when hovering over cards
+    carouselCards.addEventListener('mouseenter', () => {
+      const chevronAfter = document.createElement('style');
+      chevronAfter.innerHTML = '.carousel-chevron-right::after { opacity: 1; }';
+      document.head.appendChild(chevronAfter);
+      
+      // Clean up when mouse leaves carousel
+      carouselCards.addEventListener('mouseleave', () => {
+        document.head.removeChild(chevronAfter);
+      }, { once: true });
+    });
+    
+    // Handle carousel scroll for indicators
+    carouselCards.addEventListener('scroll', () => {
+      const scrollPosition = carouselCards.scrollLeft;
+      const cardWidth = 229; // card width (223px) + gap (6px)
+      const totalCards = 18;
+      const cardsPerIndicator = 6;
+      
+      // Calculate which indicator should be active based on scroll position
+      const cardIndex = Math.floor(scrollPosition / cardWidth);
+      const indicatorIndex = Math.floor(cardIndex / cardsPerIndicator);
+      
+      // Update indicators
+      indicators.forEach((indicator, index) => {
+        if (index === indicatorIndex) {
+          indicator.classList.add('active');
+        } else {
+          indicator.classList.remove('active');
+        }
+      });
+    });
+    
+    // Handle indicator clicks
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        const cardWidth = 229; // card width (223px) + gap (6px)
+        const cardsPerIndicator = 6;
+        const scrollPosition = index * cardsPerIndicator * cardWidth;
+        
+        carouselCards.scrollTo({
+          left: scrollPosition,
+          behavior: 'smooth'
+        });
+      });
+    });
+    
+    // Also add click handler for the chevron to scroll to next indicator group
+    carouselChevron.addEventListener('click', () => {
+      const cardWidth = 229; // card width (223px) + gap (6px)
+      const cardsPerIndicator = 6;
+      const currentScroll = carouselCards.scrollLeft;
+      const currentCardIndex = Math.floor(currentScroll / cardWidth);
+      const currentIndicatorIndex = Math.floor(currentCardIndex / cardsPerIndicator);
+      const nextIndicatorIndex = (currentIndicatorIndex + 1) % (indicators.length);
+      
+      carouselCards.scrollTo({
+        left: nextIndicatorIndex * cardsPerIndicator * cardWidth,
+        behavior: 'smooth'
+      });
+    });
+  }
+
   // Search functionality
   const searchTab = document.querySelector('.searchTab');
   const searchBox = document.querySelector('.searchBox');
