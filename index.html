@@ -60,7 +60,10 @@
               fill="white"></path>
           </svg>
         </button>
-        <a href="#" class="children-link">Children</a>
+        <button class="sense-button">
+          <span class="sense-pulse"></span>
+          <span>Sense</span>
+        </button>
         <button class="notif-menu">
           <svg xmlns="http://www.w3.org/2000/svg" fill="white" role="img" viewBox="0 0 24 24" width="24" height="24"
             data-icon="BellStandard" aria-hidden="true">
@@ -89,6 +92,131 @@
         <li><a href="#">My List</a></li>
         <li><a href="#">Browse by Languages</a></li>
       </ul>
+    </div>
+    
+    <!-- Sense Modal for mood-based recommendations -->
+    <div class="sense-modal hidden">
+      <div class="sense-container">
+        <div class="sense-header">
+          <h2>How are you feeling right now?</h2>
+          <button class="sense-help">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 16V17M12 7V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div class="sense-tooltip">
+              <p>Our innovative <strong>Sense</strong> technology uses AI to understand your current mood and provide personalized recommendations.</p>
+              <p>Try these different methods to express how you feel:</p>
+              <ul>
+                <li>Choose an ambient sound that resonates with you</li>
+                <li>Move through the canvas to express complex emotions</li>
+                <li>Adjust the intensity slider to refine your experience</li>
+              </ul>
+            </div>
+          </button>
+          <button class="sense-close">×</button>
+        </div>
+        
+        <div class="sense-experience">
+          <div class="sense-ambient">
+            <div class="ambient-track" data-mood="calm">
+              <div class="ambient-visual">
+                <span class="ambient-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4V20M8 8V16M16 8V16M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              </div>
+              <span class="ambient-name">Calm Waters</span>
+            </div>
+            <div class="ambient-track" data-mood="energetic">
+              <div class="ambient-visual">
+                <span class="ambient-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 12L7 8M7 8L11 12M7 8V16M13 12L17 16M17 16L21 12M17 16V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              </div>
+              <span class="ambient-name">Electric Pulse</span>
+            </div>
+            <div class="ambient-track" data-mood="melancholy">
+              <div class="ambient-visual">
+                <span class="ambient-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 18C5.79086 18 4 16.2091 4 14C4 11.7909 5.79086 10 8 10C8 7.79086 9.79086 6 12 6C14.2091 6 16 7.79086 16 10C18.2091 10 20 11.7909 20 14C20 16.2091 18.2091 18 16 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              </div>
+              <span class="ambient-name">Distant Reflections</span>
+            </div>
+            <div class="ambient-track" data-mood="curious">
+              <div class="ambient-visual">
+                <span class="ambient-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 16V17M12 7V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              </div>
+              <span class="ambient-name">Endless Questions</span>
+            </div>
+          </div>
+          
+          <div class="sense-canvas">
+            <div class="canvas-container">
+              <div class="mood-canvas">
+                <div class="mood-gradient"></div>
+                <div class="mood-particles"></div>
+                <div class="mood-cursor"></div>
+              </div>
+              <div class="canvas-prompt">Move through the canvas to express how you feel</div>
+            </div>
+            <div class="sense-prompt">
+              <p>I'm sensing a <span class="mood-description">curious, slightly nostalgic</span> energy from you...</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sense-refinement">
+          <label>Intensity</label>
+          <div class="sense-slider">
+            <div class="slider-track"></div>
+            <div class="slider-thumb"></div>
+          </div>
+          <div class="refinement-labels">
+            <span>Subtle</span>
+            <span>Strong</span>
+          </div>
+        </div>
+        
+        <div class="sense-recommendations">
+          <h3>Based on your current vibe</h3>
+          <div class="recommendation-row">
+            <div class="recommendation-card">
+              <img src="https://image.tmdb.org/t/p/w500/rLOk4z9zL1tTukIYV56P94eO68M.jpg" alt="Midnight in Paris">
+              <div class="card-info">
+                <h4>Midnight in Paris</h4>
+                <span class="match">97% Match</span>
+              </div>
+            </div>
+            <div class="recommendation-card">
+              <img src="https://image.tmdb.org/t/p/w500/xL2Ge2Fg9XlrQgBQ7QZtBpTJS8L.jpg" alt="Eternal Sunshine of the Spotless Mind">
+              <div class="card-info">
+                <h4>Eternal Sunshine of the Spotless Mind</h4>
+                <span class="match">94% Match</span>
+              </div>
+            </div>
+            <div class="recommendation-card">
+              <img src="https://image.tmdb.org/t/p/w500/8kSerJrhrJWKLk1LViesGcnrUPE.jpg" alt="Lost in Translation">
+              <div class="card-info">
+                <h4>Lost in Translation</h4>
+                <span class="match">92% Match</span>
+              </div>
+            </div>
+          </div>
+          <button class="view-all-button">View All Recommendations</button>
+        </div>
+      </div>
     </div>
   </header>
   <main>
@@ -490,6 +618,828 @@
       z-index: 1;
     }
   </style>
+  
+  <style>
+    /* Sense Feature Styling */
+    .sense-button {
+      display: flex;
+      align-items: center;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 14px;
+      padding: 0 15px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .sense-button:hover {
+      color: #E50914;
+    }
+    
+    .sense-button.active {
+      color: #E50914;
+    }
+    
+    .sense-pulse {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #E50914, #B81D24);
+      margin-right: 8px;
+      position: relative;
+    }
+    
+    .sense-pulse::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: rgba(229, 9, 20, 0.3);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+      70% {
+        transform: scale(2);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0;
+      }
+    }
+    
+    /* Modal Styling */
+    .sense-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+    
+    .sense-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .sense-container {
+      width: 90%;
+      max-width: 1200px;
+      max-height: 90vh;
+      background: #141414;
+      border-radius: 8px;
+      overflow-y: auto;
+      color: white;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    }
+    
+    .sense-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sense-help {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      margin-right: 10px;
+      position: relative;
+      transition: color 0.3s, background 0.3s;
+    }
+    
+    .sense-help:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .sense-tooltip {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: -10px;
+      width: 300px;
+      background: #1a1a1a;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 16px;
+      color: white;
+      font-size: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      z-index: 10;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+      text-align: left;
+    }
+    
+    .sense-help:hover .sense-tooltip,
+    .sense-tooltip:hover {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .sense-tooltip::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      right: 20px;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid #1a1a1a;
+      z-index: 1;
+    }
+    
+    .sense-tooltip p {
+      margin: 0 0 12px;
+      line-height: 1.5;
+    }
+    
+    .sense-tooltip ul {
+      margin: 0;
+      padding-left: 16px;
+    }
+    
+    .sense-tooltip li {
+      margin-bottom: 6px;
+    }
+    
+    .sense-tooltip li:last-child {
+      margin-bottom: 0;
+    }
+    
+    .sense-header h2 {
+      font-size: 24px;
+      font-weight: 500;
+      margin: 0;
+    }
+    
+    .sense-close {
+      background: transparent;
+      border: none;
+      color: #999;
+      font-size: 32px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .sense-close:hover {
+      color: white;
+    }
+    
+    /* Experience Section */
+    .sense-experience {
+      display: flex;
+      padding: 32px;
+      flex-wrap: wrap;
+    }
+    
+    .sense-ambient {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      width: 100%;
+    }
+    
+    .ambient-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 120px;
+      cursor: pointer;
+      transition: all 0.3s;
+      opacity: 0.7;
+      text-align: center;
+    }
+    
+    .ambient-track:hover {
+      opacity: 1;
+      transform: translateY(-4px);
+    }
+    
+    .ambient-track.active {
+      opacity: 1;
+    }
+    
+    .ambient-visual {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ambient-track[data-mood="calm"] .ambient-visual {
+      background: linear-gradient(135deg, #004e92, #000428);
+    }
+    
+    .ambient-track[data-mood="energetic"] .ambient-visual {
+      background: linear-gradient(135deg, #f12711, #f5af19);
+    }
+    
+    .ambient-track[data-mood="melancholy"] .ambient-visual {
+      background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    }
+    
+    .ambient-track[data-mood="curious"] .ambient-visual {
+      background: linear-gradient(135deg, #1fddff, #ff4b1f);
+    }
+    
+    .ambient-icon {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .ambient-name {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    
+    /* Canvas Section */
+    .sense-canvas {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    
+    .mood-canvas {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      cursor: none;
+    }
+    
+    .mood-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #16222A, #3A6073, #1F1C2C, #928DAB, #614385, #516395);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      opacity: 0.8;
+    }
+    
+    @keyframes gradientBG {
+      0% { background-position: 0% 50% }
+      50% { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
+    }
+    
+    .mood-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    
+    .mood-cursor {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(4px);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      pointer-events: none;
+    }
+    
+    .canvas-prompt {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .sense-prompt {
+      margin-top: 24px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+    
+    .sense-prompt p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    
+    .mood-description {
+      color: #E50914;
+      font-weight: 500;
+    }
+    
+    /* Refinement Section */
+    .sense-refinement {
+      padding: 0 32px 32px;
+    }
+    
+    .sense-refinement label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: #ccc;
+    }
+    
+    .sense-slider {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    
+    .slider-track {
+      position: absolute;
+      height: 100%;
+      width: 60%;
+      background: linear-gradient(to right, #E50914, #f5af19);
+      border-radius: 2px;
+    }
+    
+    .slider-thumb {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      top: 50%;
+      left: 60%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    }
+    
+    .refinement-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #999;
+      margin-top: 8px;
+    }
+    
+    /* Recommendations Section */
+    .sense-recommendations {
+      padding: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sense-recommendations h3 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0 0 24px 0;
+    }
+    
+    .recommendation-row {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+    
+    .recommendation-card {
+      min-width: 250px;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.3s;
+      background: #1a1a1a;
+    }
+    
+    .recommendation-card:hover {
+      transform: scale(1.05);
+    }
+    
+    .recommendation-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+    
+    .more-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+    
+    .more-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 20px;
+    }
+    
+    .more-content svg {
+      margin-bottom: 12px;
+    }
+    
+    .card-info {
+      padding: 12px;
+    }
+    
+    .card-info h4 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .match {
+      color: #46d369;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .view-all-button {
+      margin-top: 24px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    
+    .view-all-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Make the modal visible for demonstration */
+    .sense-modal.hidden {
+      display: none;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .sense-experience {
+        flex-direction: column;
+      }
+      
+      .sense-ambient {
+        justify-content: center;
+      }
+      
+      .canvas-container {
+        height: 200px;
+      }
+      
+      .recommendation-card {
+        min-width: 200px;
+      }
+    }
+  </style>
+  
+  <script>
+    // Sense feature interaction
+    document.addEventListener('DOMContentLoaded', function() {
+      const senseButton = document.querySelector('.sense-button');
+      const senseModal = document.querySelector('.sense-modal');
+      const closeButton = document.querySelector('.sense-close');
+      const helpButton = document.querySelector('.sense-help');
+      const ambientTracks = document.querySelectorAll('.ambient-track');
+      const moodCanvas = document.querySelector('.mood-canvas');
+      const moodCursor = document.querySelector('.mood-cursor');
+      const moodDescription = document.querySelector('.mood-description');
+      
+      // Toggle modal
+      senseButton.addEventListener('click', function() {
+        senseModal.classList.remove('hidden');
+        senseButton.classList.add('active');
+        setTimeout(() => {
+          senseModal.classList.add('active');
+        }, 10);
+      });
+      
+      closeButton.addEventListener('click', function() {
+        senseModal.classList.remove('active');
+        senseButton.classList.remove('active');
+        setTimeout(() => {
+          senseModal.classList.add('hidden');
+        }, 400);
+      });
+      
+      // Handle ambient track selection
+      ambientTracks.forEach(track => {
+        track.addEventListener('click', function() {
+          ambientTracks.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Update mood description based on selected track
+          const mood = this.getAttribute('data-mood');
+          updateMoodDescription(mood);
+        });
+      });
+      
+      // Handle canvas interaction
+      if (moodCanvas && moodCursor) {
+        // Create particles
+        const moodParticles = document.querySelector('.mood-particles');
+        const particles = [];
+        const particleCount = 30;
+        
+        // Generate particles
+        for (let i = 0; i < particleCount; i++) {
+          createParticle();
+        }
+        
+        function createParticle() {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random position
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+          
+          // Random size
+          const size = Math.random() * 15 + 5;
+          
+          // Random opacity
+          const opacity = Math.random() * 0.5 + 0.2;
+          
+          // Random color
+          const colors = ['#E50914', '#f5af19', '#1fddff', '#46d369', '#8e2de2'];
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          
+          // Set styles
+          particle.style.cssText = `
+            position: absolute;
+            left: ${x}%;
+            top: ${y}%;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
+            border-radius: 50%;
+            opacity: ${opacity};
+            filter: blur(${size / 3}px);
+            transform: scale(0);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+          `;
+          
+          moodParticles.appendChild(particle);
+          particles.push(particle);
+          
+          // Animate in
+          setTimeout(() => {
+            particle.style.transform = 'scale(1)';
+          }, Math.random() * 1000);
+        }
+        
+        moodCanvas.addEventListener('mousemove', function(e) {
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          moodCursor.style.left = `${x}px`;
+          moodCursor.style.top = `${y}px`;
+          
+          // Map position to mood description
+          const xPercent = x / rect.width;
+          const yPercent = y / rect.height;
+          
+          updateCanvasMood(xPercent, yPercent);
+          
+          // Add particles on movement
+          if (Math.random() > 0.8) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle', 'cursor-particle');
+            
+            // Random size
+            const size = Math.random() * 10 + 5;
+            
+            // Random color based on position
+            const hue = Math.floor(xPercent * 360);
+            const color = `hsla(${hue}, 80%, 60%, 0.6)`;
+            
+            // Set styles
+            particle.style.cssText = `
+              position: absolute;
+              left: ${x}px;
+              top: ${y}px;
+              width: ${size}px;
+              height: ${size}px;
+              background: ${color};
+              border-radius: 50%;
+              filter: blur(${size / 3}px);
+              transform: scale(1);
+              transition: transform 0.8s ease, opacity 0.8s ease;
+              pointer-events: none;
+            `;
+            
+            moodParticles.appendChild(particle);
+            
+            // Animate and remove
+            setTimeout(() => {
+              particle.style.transform = 'scale(0.2)';
+              particle.style.opacity = '0';
+              setTimeout(() => {
+                if (particle.parentNode) {
+                  particle.parentNode.removeChild(particle);
+                }
+              }, 800);
+            }, 100);
+          }
+        });
+        
+        moodCanvas.addEventListener('mouseenter', function() {
+          moodCursor.style.opacity = 1;
+        });
+        
+        moodCanvas.addEventListener('mouseleave', function() {
+          moodCursor.style.opacity = 0;
+        });
+      }
+      
+      // Slider interaction
+      const sliderThumb = document.querySelector('.slider-thumb');
+      const sliderTrack = document.querySelector('.slider-track');
+      
+      if (sliderThumb && sliderTrack) {
+        let isDragging = false;
+        
+        sliderThumb.addEventListener('mousedown', function() {
+          isDragging = true;
+        });
+        
+        document.addEventListener('mouseup', function() {
+          isDragging = false;
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+          if (isDragging) {
+            const slider = document.querySelector('.sense-slider');
+            const rect = slider.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            
+            // Constrain to slider width
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+            
+            const percent = x / rect.width * 100;
+            
+            sliderThumb.style.left = `${percent}%`;
+            sliderTrack.style.width = `${percent}%`;
+          }
+        });
+      }
+      
+      // Helper functions
+      function updateMoodDescription(mood) {
+        const descriptions = {
+          'calm': 'tranquil, peaceful',
+          'energetic': 'dynamic, enthusiastic',
+          'melancholy': 'wistful, contemplative',
+          'curious': 'inquisitive, adventurous'
+        };
+        
+        moodDescription.textContent = descriptions[mood] || 'curious, slightly nostalgic';
+        
+        // Update recommendations based on mood
+        updateRecommendations(mood);
+      }
+      
+      function updateRecommendations(mood) {
+        const recommendationRow = document.querySelector('.recommendation-row');
+        const mockRecommendations = {
+          'calm': [
+            { title: 'The Secret Life of Walter Mitty', match: '95%', image: 'https://image.tmdb.org/t/p/w500/rLOk4z9zL1tTukIYV56P94eO68M.jpg' },
+            { title: 'Soul', match: '93%', image: 'https://image.tmdb.org/t/p/w500/hm58Jw4Lw8OIeECIq5qyPYhAeRJ.jpg' },
+            { title: 'Her', match: '91%', image: 'https://image.tmdb.org/t/p/w500/eCOtqtHenVLKGlcjDwUaYjgTq7C.jpg' }
+          ],
+          'energetic': [
+            { title: 'The Wolf of Wall Street', match: '98%', image: 'https://image.tmdb.org/t/p/w500/34m2tygAYBGqA9MXKhRDtzYd4MR.jpg' },
+            { title: 'Baby Driver', match: '94%', image: 'https://image.tmdb.org/t/p/w500/rmnQ9jKW72bHu8uKlMjPIb2VLMI.jpg' },
+            { title: 'Uncut Gems', match: '91%', image: 'https://image.tmdb.org/t/p/w500/6XN1vxHc7kUSqNWtaQKh2hzfnSP.jpg' }
+          ],
+          'melancholy': [
+            { title: 'Lost in Translation', match: '97%', image: 'https://image.tmdb.org/t/p/w500/8kSerJrhrJWKLk1LViesGcnrUPE.jpg' },
+            { title: 'Eternal Sunshine of the Spotless Mind', match: '95%', image: 'https://image.tmdb.org/t/p/w500/xL2Ge2Fg9XlrQgBQ7QZtBpTJS8L.jpg' },
+            { title: 'Marriage Story', match: '92%', image: 'https://image.tmdb.org/t/p/w500/pZekG6xabTmZxjmYw10wN84Hp8d.jpg' }
+          ],
+          'curious': [
+            { title: 'Midnight in Paris', match: '97%', image: 'https://image.tmdb.org/t/p/w500/rLOk4z9zL1tTukIYV56P94eO68M.jpg' },
+            { title: 'Inception', match: '95%', image: 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg' },
+            { title: 'The Grand Budapest Hotel', match: '93%', image: 'https://image.tmdb.org/t/p/w500/fr695WCUYWpHc2B3TjwSNcwEJx3.jpg' }
+          ]
+        };
+        
+        const recommendations = mockRecommendations[mood] || mockRecommendations['curious'];
+        
+        // Create HTML for recommendations
+        let recommendationsHTML = '';
+        recommendations.forEach(movie => {
+          recommendationsHTML += `
+            <div class="recommendation-card">
+              <img src="${movie.image}" alt="${movie.title}">
+              <div class="card-info">
+                <h4>${movie.title}</h4>
+                <span class="match">${movie.match} Match</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        // Add a "More for you" card at the end
+        recommendationsHTML += `
+          <div class="recommendation-card more-card">
+            <div class="more-content">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span>More for you</span>
+            </div>
+          </div>
+        `;
+        
+        recommendationRow.innerHTML = recommendationsHTML;
+      }
+      
+      function updateCanvasMood(x, y) {
+        // Map X position (0-1) to emotional dimension
+        // Map Y position (0-1) to intensity dimension
+        const emotionWords = [
+          ['joyful', 'excited', 'inspired', 'amazed'],
+          ['contented', 'peaceful', 'relaxed', 'satisfied'],
+          ['nostalgic', 'reflective', 'wistful', 'yearning'],
+          ['melancholic', 'thoughtful', 'contemplative', 'introspective']
+        ];
+        
+        const xIndex = Math.min(Math.floor(x * 4), 3);
+        const yIndex = Math.min(Math.floor(y * 4), 3);
+        
+        const primaryMood = emotionWords[yIndex][xIndex];
+        
+        // Add a secondary mood for more nuance
+        let secondaryX = xIndex;
+        let secondaryY = yIndex;
+        
+        // Pick adjacent mood
+        if (Math.random() > 0.5) {
+          secondaryX = Math.max(0, Math.min(3, secondaryX + (Math.random() > 0.5 ? 1 : -1)));
+        } else {
+          secondaryY = Math.max(0, Math.min(3, secondaryY + (Math.random() > 0.5 ? 1 : -1)));
+        }
+        
+        const secondaryMood = emotionWords[secondaryY][secondaryX];
+        moodDescription.textContent = `${primaryMood}, slightly ${secondaryMood}`;
+      }
+    });
+  </script>
 </body>
 
 </html>
