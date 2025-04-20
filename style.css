@@ -46,6 +46,15 @@
   --netflix-gray: #E5E5E5;
   --netflix-dark-gray: #808080;
   --netflix-light-gray: #b3b3b3;
+  
+  /* Mood Match colors */
+  --mood-energetic: #FF5F5F;
+  --mood-thoughtful: #FFB84D;
+  --mood-relaxed: #82E0AA;
+  --mood-inspired: #85C1E9;
+  --mood-nostalgic: #BB8FCE;
+  --mood-curious: #F7DC6F;
+  --mood-excited: #E74C3C;
 }
 
 /* ==========================================================================
@@ -1185,6 +1194,740 @@ main {
 /* Ensure container has overflow hidden */
 .carousel-container {
   overflow-x: hidden;
+}
+
+/* Mood Match Button */
+.mood-match-btn {
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  gap: 6px;
+  height: 32px;
+  margin: 0;
+  padding: 0 10px;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.mood-match-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mood-match-text {
+  margin-left: 2px;
+}
+
+.mood-match-highlight {
+  bottom: -2px;
+  display: block;
+  height: 2px;
+  left: 0;
+  position: absolute;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  width: 100%;
+}
+
+.mood-match-btn:hover .mood-match-highlight {
+  background-color: var(--netflix-red);
+  transform: scaleX(1);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+/* Mood Match Modal Overlay */
+.mood-match-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  opacity: 1;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mood-match-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mood-match-modal {
+  background-color: #181818;
+  border-radius: 6px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  max-width: 950px;
+  overflow: hidden;
+  position: relative;
+  width: 90%;
+  max-height: 90vh;
+  animation: modalAppear 0.4s ease forwards;
+}
+
+@keyframes modalAppear {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-close-btn {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  height: 36px;
+  padding: 0;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  transition: background-color 0.2s ease;
+  width: 36px;
+  z-index: 10;
+}
+
+.modal-close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.mood-match-content {
+  color: white;
+  font-weight: 400;
+  margin: 0 auto;
+  padding: 50px 35px 60px;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+/* Stage 1: Mood Selection */
+.mood-match-intro {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  text-align: center;
+}
+
+.mood-match-intro.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.mood-match-intro h2, 
+.mood-match-context h2, 
+.mood-match-results h2 {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 35px;
+  text-align: center;
+}
+
+/* Modern Grid Layout for Moods */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 30px auto;
+  max-width: 800px;
+}
+
+.mood-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mood-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.mood-name {
+  font-size: 16px;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.mood-icon {
+  font-size: 28px;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.instruction-text {
+  color: var(--netflix-light-gray);
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+/* Stage 2: Context Selection */
+.mood-match-context {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.mood-match-context.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.mood-match-context h2 .selected-mood {
+  color: var(--netflix-red);
+  font-weight: 800;
+}
+
+.context-container, 
+.duration-container,
+.rating-container {
+  margin-bottom: 40px;
+}
+
+.mood-match-context h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #e5e5e5;
+}
+
+.context-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.context-card {
+  background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 20px;
+  text-align: center;
+  transition: background 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.context-card:hover {
+  background: linear-gradient(135deg, #383838, #252525);
+  transform: translateY(-3px);
+}
+
+.context-card.selected {
+  background: linear-gradient(135deg, var(--netflix-red), #aa0914);
+  transform: translateY(-3px);
+}
+
+.context-icon {
+  color: #e5e5e5;
+  margin-bottom: 10px;
+  height: 36px;
+}
+
+.context-card p {
+  font-size: 15px;
+  margin: 0;
+  color: white;
+  font-weight: 500;
+}
+
+/* Duration Slider */
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.time-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(90deg, rgba(229, 9, 20, 0.3), rgba(229, 9, 20, 0.7), #e50914);
+  border-radius: 10px;
+  height: 8px;
+  margin: 10px 0;
+  outline: none;
+  width: 100%;
+}
+
+.time-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #ffffff;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  transition: transform 0.2s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.time-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.slider-labels {
+  display: flex;
+  font-size: 14px;
+  justify-content: space-between;
+  margin-top: 8px;
+  color: var(--netflix-light-gray);
+}
+
+/* Rating Options */
+.rating-options {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.rating-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.rating-option input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  padding: 10px 16px;
+  border-radius: 4px;
+  background-color: #2d2d2d;
+  color: white;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.rating-option:hover .checkmark {
+  background-color: #383838;
+}
+
+.rating-option input:checked ~ .checkmark {
+  background-color: var(--netflix-red);
+}
+
+/* Context Actions */
+.context-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.find-matches-btn {
+  background-color: var(--netflix-red);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 24px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.find-matches-btn:hover {
+  background-color: #f40612;
+  transform: translateY(-2px);
+}
+
+.back-btn {
+  background-color: transparent;
+  border: 1px solid var(--netflix-light-gray);
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 24px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
+/* Stage 3: Results Display */
+.mood-match-results {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.mood-match-results.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.match-description {
+  color: var(--netflix-gray);
+  font-size: 16px;
+  margin-top: -15px;
+  margin-bottom: 30px;
+}
+
+.result-mood {
+  color: var(--netflix-red);
+  font-weight: 500;
+}
+
+.result-controls {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.result-refresh, .start-over-btn {
+  background-color: transparent;
+  border: 1px solid var(--netflix-light-gray);
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  padding: 8px 16px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.result-refresh:hover, .start-over-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
+/* Results Grid */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.result-card {
+  background: #2d2d2d;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.result-card:hover {
+  transform: scale(1.05);
+}
+
+.result-card.primary-match {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(200px, 40%) 1fr;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #1a1a1a, #2d2d2d);
+}
+
+.result-card-image {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.primary-match .result-card-image {
+  height: 100%;
+  position: relative;
+}
+
+.result-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.match-percentage {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: rgba(229, 9, 20, 0.9);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.card-hover-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.result-card:hover .card-hover-info {
+  opacity: 1;
+}
+
+.hover-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.hover-buttons .play-now {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: background-color 0.2s ease;
+}
+
+.hover-buttons .play-now:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.hover-buttons .add-list {
+  background-color: rgba(42, 42, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  width: 32px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.hover-buttons .add-list:hover {
+  border-color: white;
+  background-color: rgba(42, 42, 42, 1);
+}
+
+.result-card-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.result-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 10px 0 4px;
+  padding: 0 10px;
+}
+
+.primary-match h3 {
+  font-size: 24px;
+  margin: 0 0 8px;
+  padding: 0;
+}
+
+.result-meta {
+  color: var(--netflix-light-gray);
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 0 10px;
+}
+
+.primary-match .result-meta {
+  font-size: 14px;
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.result-description {
+  color: var(--netflix-gray);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Media Queries */
+@media screen and (max-width: 1200px) {
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .mood-match-btn svg {
+    margin-right: 0;
+  }
+  
+  .mood-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .result-card.primary-match {
+    grid-template-columns: 1fr;
+  }
+  
+  .primary-match .result-card-image {
+    height: 200px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mood-match-modal {
+    width: 95%;
+  }
+  
+  .mood-match-content {
+    padding: 40px 25px 50px;
+  }
+  
+  .context-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .context-card {
+    padding: 15px;
+  }
+  
+  .context-icon {
+    height: 30px;
+  }
+  
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .mood-match-text {
+    display: none;
+  }
+  
+  .mood-match-highlight {
+    display: none;
+  }
+  
+  .mood-match-intro h2, 
+  .mood-match-context h2, 
+  .mood-match-results h2 {
+    font-size: 22px;
+  }
+  
+  .mood-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .mood-card {
+    height: 80px;
+  }
+  
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .result-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .result-refresh, .start-over-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mood-match-content {
+    padding: 30px 15px 40px;
+  }
+  
+  .mood-match-intro h2, 
+  .mood-match-context h2, 
+  .mood-match-results h2 {
+    font-size: 20px;
+  }
+  
+  .context-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .context-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+  
+  .find-matches-btn, .back-btn {
+    width: 100%;
+  }
 }
 
 

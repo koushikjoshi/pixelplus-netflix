@@ -161,7 +161,339 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+  
+  // Mood Match functionality
+  initializeMoodMatch();
 });
+
+/**
+ * Initialize the Mood Match feature
+ */
+function initializeMoodMatch() {
+  // Get elements
+  const moodMatchBtn = document.querySelector('.mood-match-btn');
+  const moodMatchOverlay = document.querySelector('.mood-match-overlay');
+  const modalCloseBtn = document.querySelector('.modal-close-btn');
+  const moodCards = document.querySelectorAll('.mood-card');
+  const contextCards = document.querySelectorAll('.context-card');
+  const timeSlider = document.querySelector('.time-slider');
+  const findMatchesBtn = document.querySelector('.find-matches-btn');
+  const backBtn = document.querySelector('.back-btn');
+  const startOverBtn = document.querySelector('.start-over-btn');
+  const resultRefreshBtn = document.querySelector('.result-refresh');
+  
+  // Get screens
+  const introScreen = document.querySelector('.mood-match-intro');
+  const contextScreen = document.querySelector('.mood-match-context');
+  const resultsScreen = document.querySelector('.mood-match-results');
+  
+  // State variables
+  let selectedMood = '';
+  let selectedContext = '';
+  let selectedDuration = 2;
+  let selectedRating = 'all';
+  
+  // Open the modal when mood match button is clicked
+  if (moodMatchBtn) {
+    moodMatchBtn.addEventListener('click', () => {
+      moodMatchOverlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+      resetMoodMatch();
+    });
+  }
+  
+  // Close the modal when close button is clicked
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', () => {
+      moodMatchOverlay.classList.add('hidden');
+      document.body.style.overflow = ''; // Restore scrolling
+    });
+  }
+  
+  // Close the modal when clicking outside the content
+  if (moodMatchOverlay) {
+    moodMatchOverlay.addEventListener('click', (e) => {
+      if (e.target === moodMatchOverlay) {
+        moodMatchOverlay.classList.add('hidden');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+    });
+  }
+  
+  // Handle mood selection
+  if (moodCards) {
+    moodCards.forEach(card => {
+      card.addEventListener('click', () => {
+        selectedMood = card.getAttribute('data-mood');
+        
+        // Update the selected mood text
+        const selectedMoodElements = document.querySelectorAll('.selected-mood');
+        selectedMoodElements.forEach(el => {
+          el.textContent = selectedMood;
+          
+          // Set the color based on the mood
+          const cardStyle = window.getComputedStyle(card);
+          const backgroundColor = cardStyle.background;
+          const colorMatch = backgroundColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+          
+          if (colorMatch) {
+            const [_, r, g, b] = colorMatch;
+            el.style.color = `rgb(${r}, ${g}, ${b})`;
+          } else {
+            el.style.color = 'var(--netflix-red)';
+          }
+        });
+        
+        // Switch to context screen
+        switchScreen(introScreen, contextScreen);
+      });
+    });
+  }
+  
+  // Handle context card selection
+  if (contextCards) {
+    contextCards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Remove selected class from all cards
+        contextCards.forEach(c => c.classList.remove('selected'));
+        
+        // Add selected class to clicked card
+        card.classList.add('selected');
+        
+        // Store the selected context
+        selectedContext = card.getAttribute('data-context');
+      });
+    });
+  }
+  
+  // Handle time slider changes
+  if (timeSlider) {
+    timeSlider.addEventListener('input', () => {
+      selectedDuration = parseInt(timeSlider.value);
+    });
+  }
+  
+  // Handle rating options changes
+  const ratingOptions = document.querySelectorAll('input[name="rating"]');
+  if (ratingOptions) {
+    ratingOptions.forEach(option => {
+      option.addEventListener('change', () => {
+        selectedRating = option.value;
+      });
+    });
+  }
+  
+  // Handle find matches button click
+  if (findMatchesBtn) {
+    findMatchesBtn.addEventListener('click', () => {
+      // Switch to results screen
+      switchScreen(contextScreen, resultsScreen);
+      
+      // Update the results based on selections
+      updateResultsScreen(true);
+    });
+  }
+  
+  // Handle back button click
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      // Switch back to mood selection screen
+      switchScreen(contextScreen, introScreen);
+    });
+  }
+  
+  // Handle start over button click
+  if (startOverBtn) {
+    startOverBtn.addEventListener('click', () => {
+      // Reset all selections and go back to first screen
+      resetMoodMatch();
+      
+      // Switch back to mood selection screen
+      switchScreen(resultsScreen, introScreen);
+    });
+  }
+  
+  // Handle refresh button click
+  if (resultRefreshBtn) {
+    resultRefreshBtn.addEventListener('click', () => {
+      // Update the results with a subtle animation
+      updateResultsScreen(true);
+    });
+  }
+  
+  // Function to switch between screens
+  function switchScreen(fromScreen, toScreen) {
+    if (!fromScreen || !toScreen) return;
+    
+    // Hide the current screen
+    fromScreen.classList.add('hidden');
+    
+    // Show the target screen
+    toScreen.classList.remove('hidden');
+    
+    // Scroll to top of modal content
+    const modalContent = document.querySelector('.mood-match-content');
+    if (modalContent) {
+      modalContent.scrollTop = 0;
+    }
+  }
+  
+  // Function to update the results screen based on selections
+  function updateResultsScreen(animate = false) {
+    // Get the current mood data
+    const moodData = moodRecommendations[selectedMood] || moodRecommendations.thoughtful;
+    
+    // Update the result mood text and color
+    const resultMoodElement = document.querySelector('.result-mood');
+    if (resultMoodElement) {
+      resultMoodElement.textContent = moodData.title || selectedMood;
+      resultMoodElement.style.color = moodData.color || 'var(--netflix-red)';
+    }
+    
+    // Get a filtered set of recommendations based on context and duration
+    let filteredRecommendations = [...moodData.recommendations];
+    
+    // Apply filters if needed (duration, context, rating)
+    if (selectedRating === 'restricted') {
+      filteredRecommendations = filteredRecommendations.filter(item => 
+        !item.rating || !['R', 'TV-MA'].includes(item.rating)
+      );
+    }
+    
+    // Update the DOM with the new recommendations
+    const updateDOM = () => {
+      const resultsGrid = document.querySelector('.results-grid');
+      if (!resultsGrid) return;
+      
+      // Clear existing content if needed
+      if (animate) {
+        resultsGrid.style.opacity = '0';
+        resultsGrid.style.transform = 'translateY(20px)';
+      }
+      
+      // Small delay if animating
+      setTimeout(() => {
+        // Shuffle the recommendations for refresh effect
+        if (animate) {
+          filteredRecommendations.sort(() => Math.random() - 0.5);
+        }
+        
+        // Update primary match (first item)
+        const primaryMatch = resultsGrid.querySelector('.primary-match');
+        if (primaryMatch && filteredRecommendations.length > 0) {
+          const primaryItem = filteredRecommendations[0];
+          
+          // Update image and match percentage
+          const primaryImg = primaryMatch.querySelector('img');
+          const primaryPercentage = primaryMatch.querySelector('.match-percentage');
+          
+          if (primaryImg) primaryImg.src = primaryItem.image;
+          if (primaryPercentage) primaryPercentage.textContent = `${primaryItem.match}% Match`;
+          
+          // Update title, year, duration
+          const primaryTitle = primaryMatch.querySelector('h3');
+          const primaryMeta = primaryMatch.querySelector('.result-meta');
+          const primaryDesc = primaryMatch.querySelector('.result-description');
+          
+          if (primaryTitle) primaryTitle.textContent = primaryItem.title;
+          
+          if (primaryMeta) {
+            primaryMeta.innerHTML = `
+              <span class="year">${primaryItem.year}</span>
+              <span class="duration">${primaryItem.duration}</span>
+              ${primaryItem.rating ? `<span class="rating">${primaryItem.rating}</span>` : ''}
+            `;
+          }
+          
+          if (primaryDesc) {
+            primaryDesc.textContent = primaryItem.description || 
+              `A perfect match for your ${selectedMood} mood${selectedContext ? ` when ${getContextDescription(selectedContext)}` : ''}.`;
+          }
+        }
+        
+        // Update other matches
+        const otherCards = resultsGrid.querySelectorAll('.result-card:not(.primary-match)');
+        otherCards.forEach((card, index) => {
+          // Get the corresponding recommendation (offset by 1 because primary is index 0)
+          const itemIndex = index + 1;
+          if (itemIndex < filteredRecommendations.length) {
+            const item = filteredRecommendations[itemIndex];
+            
+            // Update image and match percentage
+            const img = card.querySelector('img');
+            const percentage = card.querySelector('.match-percentage');
+            
+            if (img) img.src = item.image;
+            if (percentage) percentage.textContent = `${item.match}% Match`;
+            
+            // Update title, year, duration
+            const title = card.querySelector('h3');
+            const meta = card.querySelector('.result-meta');
+            
+            if (title) title.textContent = item.title;
+            
+            if (meta) {
+              meta.innerHTML = `
+                <span class="year">${item.year}</span>
+                <span class="duration">${item.duration}</span>
+                ${item.rating ? `<span class="rating">${item.rating}</span>` : ''}
+              `;
+            }
+            
+            // Show the card
+            card.style.display = 'block';
+          } else {
+            // Hide the card if no corresponding recommendation
+            card.style.display = 'none';
+          }
+        });
+        
+        // Animate in if needed
+        if (animate) {
+          resultsGrid.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          resultsGrid.style.opacity = '1';
+          resultsGrid.style.transform = 'translateY(0)';
+        }
+      }, animate ? 300 : 0);
+    };
+    
+    // Immediately update DOM or wait for animation
+    updateDOM();
+  }
+  
+  // Helper function to get context description
+  function getContextDescription(context) {
+    switch(context) {
+      case 'solo': return 'watching alone';
+      case 'couple': return 'on a date night';
+      case 'friends': return 'with friends';
+      case 'family': return 'with family';
+      default: return '';
+    }
+  }
+  
+  // Function to reset the mood match selections
+  function resetMoodMatch() {
+    // Reset state variables
+    selectedMood = '';
+    selectedContext = '';
+    selectedDuration = 2;
+    selectedRating = 'all';
+    
+    // Reset DOM elements
+    contextCards.forEach(card => card.classList.remove('selected'));
+    
+    if (timeSlider) timeSlider.value = 2;
+    
+    const ratingAllOption = document.querySelector('input[name="rating"][value="all"]');
+    if (ratingAllOption) ratingAllOption.checked = true;
+    
+    // Show the intro screen, hide others
+    introScreen.classList.remove('hidden');
+    contextScreen.classList.add('hidden');
+    resultsScreen.classList.add('hidden');
+  }
+}
 
 /**
  * Initialize all Netflix-style carousels
